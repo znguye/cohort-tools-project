@@ -5,10 +5,12 @@ const cors = require("cors");
 const PORT = 5005;
 const mongoose = require("mongoose");
 const Cohort = require("./models/cohortModel.js");
-const Student = require("./models/studentModel.js");
+const Student = require("./models/studentsModel.js");
+const cohortRoute = require("./routes/cohortRoutes.js");
+const studentRoute = require("./routes/studentRoutes.js");
 
 mongoose
-  .connect("mongodb://127.0.0.1:27017/cohort-tools-api")
+  .connect("mongodb+srv://sami:Test123@cluster0.wrha9qb.mongodb.net/")
   .then(x => console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`))
   .catch(err => console.error("Error connecting to mongo", err));
 
@@ -39,13 +41,9 @@ app.get("/docs", (req, res) => {
   res.sendFile(__dirname + "/views/docs.html");
 });
 
-app.get("/api/cohorts", (req, res) => {
-  res.json(cohorts)
-})
+app.use("/api/cohorts", cohortRoute);
 
-app.get("/api/students", (req, res) => {
-  res.json(students)
-})
+app.use("/api/students", studentRoute);
 
 
 // START SERVER

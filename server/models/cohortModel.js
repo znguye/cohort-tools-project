@@ -2,6 +2,9 @@ const mongoose = require("mongoose");
 const {Schema, model} = mongoose;
 
 const cohortSchema = new Schema({
+  _id: {
+        type: Number
+    },
     cohortSlug: {
         type: String,
         required: true,

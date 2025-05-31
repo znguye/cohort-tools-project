@@ -4,6 +4,9 @@ const {Schema, model} = mongoose;
 
 // SCHEMA
 const studentSchema = new Schema({
+    _id: {
+        type: Number
+    },
     firstName: {
         type: String, 
         required: true

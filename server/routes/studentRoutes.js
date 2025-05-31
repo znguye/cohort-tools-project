@@ -3,9 +3,9 @@ const Student = require("../models/studentsModel");
 const router = require("express").Router();
 
 // GET ALL STUDENTS
-router.get("/api/students", (req, res, next) => {
+router.get("/", (req, res, next) => {
     Student.find()
-        // .populate('')
+        .populate('cohort')
         .then((allStudents) => {
             res.status(200).json(allStudents);
         })
@@ -16,11 +16,12 @@ router.get("/api/students", (req, res, next) => {
 
 
 // GET STUDENT BY ID
-router.get("/api/students/:studentId", (req, res, next) => {
+router.get("/:studentId", (req, res, next) => {
     const studentId = req.params.studentId;
     Student.findById(studentId)
+        .populate('cohort')
         .then((student) => {
-            res.status(200).json(student);
+            res.status(200).json(student); 
         })
         .catch((error) => {
             res.status(500).json({error: "Error while retrieving a student by ID"});
@@ -29,10 +30,11 @@ router.get("/api/students/:studentId", (req, res, next) => {
 
 
 // GET ALL STUDENTS BY COHORT
-router.get("/api/students/cohort/:cohortId", (req, res, next) => {
+router.get("/cohort/:cohortId", (req, res, next) => {
     const cohortId = req.params.cohortId; 
     
     Student.find({cohortId})
+        .populate('cohort')
         .then((students) => {
             res.status(200).json(students);
         })
@@ -43,7 +45,7 @@ router.get("/api/students/cohort/:cohortId", (req, res, next) => {
 
 
 // CREATE A NEW STUDENT
-router.post("/api/students", (req, res, next) => {
+router.post("/", (req, res, next) => {
     Student
         .create({
             firstName: req.body.firstName,
@@ -69,8 +71,8 @@ router.post("/api/students", (req, res, next) => {
 
 
 // UPDATE STUDENT BY ID
-router.put("/api/students/:studentId", (req, res, next) => {
-    const studentId = req.params.id;
+router.put("/:studentId", (req, res, next) => {
+    const studentId = req.params.studentId;
 
     Student.findByIdAndUpdate(studentId, req.body, {new: true})
         .then((updatedStudent) => {
@@ -84,8 +86,8 @@ router.put("/api/students/:studentId", (req, res, next) => {
 
 
 // DELETE STUDENT BY ID
-router.delete("/api/students/:studentId", (req, res, next) => {
-    const studentId = req.params.id;
+router.delete("/:studentId", (req, res, next) => {
+    const studentId = req.params.studentId;
 
     Student.findByIdAndDelete(studentId)
         .then((result) => {
