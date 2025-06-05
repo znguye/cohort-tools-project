@@ -5,7 +5,8 @@ const {Schema, model} = mongoose;
 // SCHEMA
 const studentSchema = new Schema({
     _id: {
-        type: Number
+        type: Number,
+        required: true
     },
     firstName: {
         type: String, 
@@ -45,7 +46,7 @@ const studentSchema = new Schema({
         default: "https://i.imgur.com/r8bo8u7.png" 
     },
     cohort: {
-        type: mongoose.Schema.Types.ObjectId, 
+        type: Schema.Types.Mixed, 
         ref: "Cohort"
     },
     projects: {

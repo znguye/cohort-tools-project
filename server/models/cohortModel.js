@@ -2,8 +2,9 @@ const mongoose = require("mongoose");
 const {Schema, model} = mongoose;
 
 const cohortSchema = new Schema({
-  _id: {
-        type: Number
+    _id: {
+        type: Number,
+        required: true
     },
     cohortSlug: {
         type: String,
@@ -51,9 +52,13 @@ const cohortSchema = new Schema({
     }
 },
 {
-    timestamps: true
+    timestamps: true,
+    _id: false
 }
 );
+
+// Re-add _id field to ensure it's handled properly
+cohortSchema.add({ _id: { type: Number, required: true } });
 
 const Cohort = model("Cohort", cohortSchema);
 

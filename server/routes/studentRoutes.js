@@ -17,7 +17,7 @@ router.get("/", (req, res, next) => {
 
 // GET STUDENT BY ID
 router.get("/:studentId", (req, res, next) => {
-    const studentId = req.params.studentId;
+    const studentId = Number(req.params.studentId);
     Student.findById(studentId)
         .populate('cohort')
         .then((student) => {
@@ -31,14 +31,18 @@ router.get("/:studentId", (req, res, next) => {
 
 // GET ALL STUDENTS BY COHORT
 router.get("/cohort/:cohortId", (req, res, next) => {
-    const cohortId = req.params.cohortId; 
+    const cohortId = Number(req.params.cohortId); 
+    console.log("GET students by cohort - cohortId:", cohortId, "type:", typeof cohortId);
     
-    Student.find({cohortId})
+    Student.find({cohort: cohortId})
         .populate('cohort')
         .then((students) => {
+            console.log("Students found:", students.length);
+            console.log("Students data:", students);
             res.status(200).json(students);
         })
         .catch((error) => {
+            console.error("Error in GET students by cohort:", error);
             res.status(500).json({error: "Error while retrieving all students by cohort ID"});
         })
 })
@@ -48,6 +52,7 @@ router.get("/cohort/:cohortId", (req, res, next) => {
 router.post("/", (req, res, next) => {
     Student
         .create({
+            _id: req.body._id,
             firstName: req.body.firstName,
             lastName:req.body.lastName,
             email: req.body.email,
@@ -72,7 +77,7 @@ router.post("/", (req, res, next) => {
 
 // UPDATE STUDENT BY ID
 router.put("/:studentId", (req, res, next) => {
-    const studentId = req.params.studentId;
+    const studentId = Number(req.params.studentId);
 
     Student.findByIdAndUpdate(studentId, req.body, {new: true})
         .then((updatedStudent) => {
@@ -87,7 +92,7 @@ router.put("/:studentId", (req, res, next) => {
 
 // DELETE STUDENT BY ID
 router.delete("/:studentId", (req, res, next) => {
-    const studentId = req.params.studentId;
+    const studentId = Number(req.params.studentId);
 
     Student.findByIdAndDelete(studentId)
         .then((result) => {
