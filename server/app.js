@@ -9,13 +9,13 @@ const Student = require("./models/studentsModel.js");
 const cohortRoute = require("./routes/cohortRoutes.js");
 const studentRoute = require("./routes/studentRoutes.js");
 const {errorHandler, notFoundHandler} = require("./middleware/error-handling.js");
+const authRouter = require("./routes/auth.routes.js");
+const {isAuthenticated} = require("./middleware/jwt.middleware.js")
 
 mongoose
   .connect("mongodb+srv://sami:Test123@cluster0.wrha9qb.mongodb.net/")
   .then(x => console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`))
   .catch(err => console.error("Error connecting to mongo", err));
-
-
 
 // INITIALIZE EXPRESS APP - https://expressjs.com/en/4x/api.html#express
 const app = express();
@@ -33,9 +33,12 @@ app.get("/docs", (req, res) => {
   res.sendFile(__dirname + "/views/docs.html");
 });
 
-app.use("/api/cohorts", cohortRoute);
+app.use("/api/cohorts", isAuthenticated, cohortRoute);
 
-app.use("/api/students", studentRoute);
+app.use("/api/students", isAuthenticated, studentRoute);
+
+app.use("/api/auth",authRouter);
+
 
 //ERROR HANDLING MIDDLEWARES
 app.use(notFoundHandler);
