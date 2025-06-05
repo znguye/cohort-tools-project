@@ -52,7 +52,7 @@ User.findOne({email})
 
 // POST /auth/login
 
-router.post('login', (req, res, next) => {
+router.post('/login', (req, res, next) => {
     const {email, password} = req.body;
     
     

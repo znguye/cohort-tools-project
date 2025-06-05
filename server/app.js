@@ -8,6 +8,7 @@ const Cohort = require("./models/cohortModel.js");
 const Student = require("./models/studentsModel.js");
 const cohortRoute = require("./routes/cohortRoutes.js");
 const studentRoute = require("./routes/studentRoutes.js");
+const userRoute = require("./routes/user.routes.js");
 const {errorHandler, notFoundHandler} = require("./middleware/error-handling.js");
 const authRouter = require("./routes/auth.routes.js");
 const {isAuthenticated} = require("./middleware/jwt.middleware.js")
@@ -37,9 +38,9 @@ app.use("/api/cohorts", isAuthenticated, cohortRoute);
 
 app.use("/api/students", isAuthenticated, studentRoute);
 
-app.use("/api/auth",authRouter);
+app.use("/api/auth", authRouter);
 
-
+app.use("/api/users", isAuthenticated, userRoute);
 //ERROR HANDLING MIDDLEWARES
 app.use(notFoundHandler);
 app.use(errorHandler);
